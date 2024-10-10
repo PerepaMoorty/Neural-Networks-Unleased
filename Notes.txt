@@ -1,0 +1,32 @@
+DAY 1:
+
+1. The base idea of machine learning is Neural Networks.
+2. Simplest form of artificial Neural Networks is Perceptrons
+
+    Perceptrons:
+
+    Consists of:
+        - Input Features
+        - Weights
+        - Bias
+        - Activation
+
+
+    1. Weights: Giving importance to different input neurons
+    2. Bias: Helps shift the detection boundary away from the origin
+    3. Activation: Decides when the neurons fire
+
+    The Summation Function: This takes a wirghted sum of the input features
+    
+    The Backward Pass: a simple error function
+    The aim is to get the loss of errors to a minima
+
+
+3. Machine Learning Frameworks:
+    - Frameworks like Pytorch and Tensorflow are built using C++ and hence are viably faster to use
+
+4. Tensors:
+    - They are n-dimensional arrays which are native to Pytorch and comee with built-in functions
+    - They support parallel operations allowing GPU Computations
+    - Splitting an image into color channels and representing each channel as a tensor
+    - Convient data structure for performing complex mathematical calculation or transformations
