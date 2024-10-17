@@ -30,3 +30,9 @@ DAY 1:
     - They support parallel operations allowing GPU Computations
     - Splitting an image into color channels and representing each channel as a tensor
     - Convient data structure for performing complex mathematical calculation or transformations
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DAY 2:
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
