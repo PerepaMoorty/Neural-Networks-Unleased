@@ -16,7 +16,7 @@ DAY 1:
     2. Bias: Helps shift the detection boundary away from the origin
     3. Activation: Decides when the neurons fire
 
-    The Summation Function: This takes a wirghted sum of the input features
+    The Summation Function: This takes a weighted sum of the input features
     
     The Backward Pass: a simple error function
     The aim is to get the loss of errors to a minima
@@ -36,3 +36,12 @@ DAY 1:
 DAY 2:
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DAY 3:
+
+    Machine Learning: (Types)
+     - Supervised : Labelled data
+     - Unsupervised : Unlabelled data
+     - Semi-Supervised : Some Labelled data and mostly Unlabelled data
+
+    
