@@ -1,0 +1,1 @@
+# Build a CNN for the Fashion MNIST Dataset and Benchmark it against the previous Neural Network which used the same dataset (Week 1 Assignment)
