@@ -6,13 +6,13 @@ def apply_sobel_filter(image):
     img_array = np.array(image, dtype=float)
 
     # Defining the Sobel Filters/Kernels - Edge Detection
-    sobel_x = np.array([[-1, 0, 1],
-                       [-2, 0, 2],
-                       [-1, 0, 1]])
-
-    sobel_y = np.array([[-1, -2, -1],
+    sobel_x = np.array([[-1, -2, -1],
                        [0, 0, 0],
                        [1, 2, 1]])
+
+    sobel_y = np.array([[-1, 0, 1],
+                       [-2, 0, 2],
+                       [-1, 0, 1]])
 
     image_height = img_array.shape[1]
     image_width = img_array.shape[2]
@@ -27,7 +27,6 @@ def apply_sobel_filter(image):
                 patch = img_array[num][x-1 : x+2, y-1 : y+2]
                 gradient_x[num][x, y] = np.sum(patch * sobel_x)
                 gradient_y[num][x, y] = np.sum(patch * sobel_y)
-                return
 
     gradient_magnitude = np.sqrt(gradient_x ** 2 + gradient_y ** 2)
 
@@ -41,7 +40,6 @@ def apply_sobel_filter(image):
 # Function to display graphs/plot the results
 def display_results(image, gradient_x, gradient_y, gradient_magnitude):
     fig, axes = plt.subplots(2, 2, figsize=(12, 12))
-
 
     axes[0, 0].imshow(image, cmap='gray')
     axes[0, 0].set_title('Original Image')
