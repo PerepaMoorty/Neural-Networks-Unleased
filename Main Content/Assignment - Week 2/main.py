@@ -11,9 +11,3 @@ print("\nTraining Image Data: ", train_image_data.shape)
 print("Training Image Labels: ", train_image_label.shape)
 print("\nTesting Image Data: ", test_image_data.shape)
 print("Testing Image Labels: ", test_image_label.shape)
-
-# Applying Sobel Filter to the dataset
-gradient_x, gradient_y, gradient_magnitude = apply_sobel_filter(train_image_data)
-
-# Displaying the Results after applying the filters
-display_results(train_image_data[0], gradient_x[0], gradient_y[0], gradient_magnitude[0])
