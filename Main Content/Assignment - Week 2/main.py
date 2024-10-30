@@ -1,64 +1,75 @@
-# Build a Ctorch.nn for the Fashion MNIST Dataset and Benchmark it against the previous Neural Network which used the same dataset (Week 1 Assignment)
-
+# Import necessary libraries
 import time
-import os
-import torch
-import torch.nn
-import torch.nn.functional
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-
-# Clearing Console
-os.system("clear")
-
-# Start Time
 start_time = time.time()
 
-# Importing Fashion MNIST Dataset
-(train_image_data, train_image_label), (test_image_data, test_image_label) = tf.keras.datasets.fashion_mnist.load_data()
-train_image_data = train_image_data.astype('float32') / 255.0
-test_image_data = test_image_data.astype('float32') / 255.0
+import os
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import tensorflow as tf
+from torch.utils.data import DataLoader, TensorDataset
 
-# Checking the dataset shape
-print("Training Image Data: ", train_image_data.shape)
-print("Training Image Labels: ", train_image_label.shape)
-print("Testing Image Data: ", test_image_data.shape)
-print("Testing Image Labels: ", test_image_label.shape)
+os.system('clear')
 
-# Defining the classes and the names
-CLASS_NAMES = ["T-Shirt/Top", "Trousers", "Pullover", "Dress", "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle Boot"]
-
-# Checking if GPU can be used
-if(torch.cuda.is_available()):
-    print("CUDA available, using GPU for Calculations")
-    device = "cuda"
-else:
-    print("CUDA not available, using CPU for Calculations")
-    device = "cpu"
-
-# Hyper Parameters
+# Parameters
+BATCH_SIZE = 64
 EPOCHS = 10
 LEARNING_RATE = 0.001
-        
-# Defining the CNN Model
-class ConvolutionalNeuralNetwork_Model:
-    def __init__(self):
-        self.model = torch.nn.Sequential(
-            torch.nn.Conv2d(1, 32, kernel_size=3, padding=1), torch.nn.ReLU(),
-            torch.nn.MaxPool2d((4, 4)),
-            torch.nn.Conv2d(32, 16, kernel_size=3, padding=1), torch.nn.ReLU(),
-            torch.nn.MaxPool2d((2, 2))
-        )
-        self.criterion = torch.nn.BCELoss()
-        self.optimizer = torch.optim.Adam(self.model.parameters, lr=LEARNING_RATE)
-        
-    def train(self, train_data, train_label):
-        train_data_tensor = torch.tensor(train_data).unsqueeze(1)
-        train_label_tensor = torch.tensor(train_label)
 
-# End Time
+# Load and preprocess the Fashion MNIST dataset
+(X_train, y_train), (X_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+X_train = X_train.astype('float32') / 255.0
+X_test = X_test.astype('float32') / 255.0
+
+# CNN Model (PyTorch) - Code 1
+class CNNModel:
+    def __init__(self):
+        self.model = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, padding=1), nn.ReLU(),
+            nn.MaxPool2d(2, 2), nn.Conv2d(32, 64, 3), nn.ReLU(),
+            nn.MaxPool2d(2, 2), nn.Flatten(),
+            nn.Linear(64 * 6 * 6, 128), nn.ReLU(),
+            nn.Linear(128, 10)
+        )
+        self.criterion = nn.CrossEntropyLoss()
+        self.optimizer = optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
+
+    def train(self, X_train, y_train):
+        X_train_tensor = torch.tensor(X_train).unsqueeze(1)
+        y_train_tensor = torch.tensor(y_train)
+        train_loader = DataLoader(TensorDataset(X_train_tensor, y_train_tensor), batch_size=BATCH_SIZE, shuffle=True)
+        
+        self.model.train()
+        for epoch in range(EPOCHS):
+            total_loss = 0
+            for batch_X, batch_y in train_loader:
+                self.optimizer.zero_grad()
+                loss = self.criterion(self.model(batch_X), batch_y)
+                loss.backward()
+                self.optimizer.step()
+                total_loss += loss.item()
+            print(f"Epoch {epoch + 1}/{EPOCHS} - Loss: {total_loss / len(train_loader):.4f}")
+
+    def evaluate(self, X, y):
+        self.model.eval()
+        with torch.no_grad():
+            X_tensor, y_tensor = torch.tensor(X).unsqueeze(1), torch.tensor(y)
+            accuracy = (torch.argmax(self.model(X_tensor), dim=1) == y_tensor).float().mean().item()
+        return accuracy
+
+# Preprocess data for both models
+X_train_flat = X_train.reshape(-1, 28, 28)
+X_test_flat = X_test.reshape(-1, 28, 28)
+
+# Instantiate and train both models
+print("Training Intiated...\n")
+cnn_model = CNNModel()
+cnn_model.train(X_train_flat, y_train)
+cnn_accuracy = cnn_model.evaluate(X_test_flat, y_test)
+
+# Results
+print(f"\nCNN Model Test Accuracy: {cnn_accuracy * 100:.2f}%")
+
 end_time = time.time()
 
-# Calculating the Total Runtime
-print(f"\n\nTotal Runtime: {end_time - start_time : .4f}")
+print(f"\nTotal Runtime: {end_time - start_time :.4f}")
