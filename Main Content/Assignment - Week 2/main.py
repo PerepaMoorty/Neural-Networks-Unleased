@@ -9,7 +9,7 @@ import torch.optim as optim
 import tensorflow as tf
 from torch.utils.data import DataLoader, TensorDataset
 
-os.system('clear')
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # Parameters
 BATCH_SIZE = 64
