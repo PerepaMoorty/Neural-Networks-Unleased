@@ -72,4 +72,4 @@ print(f"\nCNN Model Test Accuracy: {cnn_accuracy * 100:.2f}%")
 
 end_time = time.time()
 
-print(f"\nTotal Runtime: {end_time - start_time :.4f}")
+print(f"\nTotal Runtime: {end_time - start_time :.4f} seconds")
